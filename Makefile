@@ -10,24 +10,39 @@ CLIENT_PATH = $(SRC_PATH)/$(CLIENT)
 LIBFT_PATH = $(SRC_PATH)/ft_printf
 LIBFTPRINTF = $(LIBFT_PATH)/libftprintf.a
 
+SERVER_SOURCES = $(SERVER_PATH)/server.c
+SERVER_OBJECTS = $(SERVER_SOURCES:.c=.o)
 
-all: $(SERVER)
+CLIENT_SOURCES = $(CLIENT_PATH)/client.c
+CLIENT_OBJECTS = $(CLIENT_SOURCES:.c=.o)
 
-$(SERVER): $(LIBFTPRINTF)
+all: $(SERVER) $(CLIENT)
+
+$(SERVER): $(LIBFTPRINTF) $(SERVER_OBJECTS)
 	$(MAKE) -C $(SERVER_PATH)
 	cp $(SERVER_PATH)/$(SERVER) .
+
+$(CLIENT): $(LIBFTPRINTF) $(CLIENT_OBJECTS)
+	$(MAKE) -C $(CLIENT_PATH)
+	cp $(CLIENT_PATH)/$(CLIENT) .
 
 $(LIBFTPRINTF):
 	$(MAKE) -C $(LIBFT_PATH)
 
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
 fclean: clean
 	rm -f $(SERVER)
+	rm -f $(CLIENT)
 	$(MAKE) -C $(LIBFT_PATH) fclean
 	$(MAKE) -C $(SERVER_PATH) fclean
+	$(MAKE) -C $(CLIENT_PATH) fclean
 
 clean:
 	$(MAKE) -C $(LIBFT_PATH) clean
 	$(MAKE) -C $(SERVER_PATH) clean
+	$(MAKE) -C $(CLIENT_PATH) clean
 
 re: fclean all
 

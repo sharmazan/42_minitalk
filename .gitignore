@@ -4,5 +4,5 @@ src/client/client
 **/*.o
 **/*.a
 **/.vscode
-server
-client
+./server
+./client

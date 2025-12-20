@@ -1,11 +1,12 @@
-NAME = server
+NAME = client
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 LIBFT_PATH = ../ft_printf
 LIBFTPRINTF = $(LIBFT_PATH)/libftprintf.a
 
-SOURCES =	server.c
+SOURCES =	client.c
+
 OBJECTS = $(SOURCES:.c=.o)
 
 all: $(NAME)
