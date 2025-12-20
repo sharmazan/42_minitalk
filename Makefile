@@ -1,33 +1,33 @@
-NAME = server
-# HEADER = libftprintf.h
+SERVER = server
+CLIENT = client
+SRC_PATH = src
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-LIBFT_PATH = ft_printf
+LIBFT_PATH = $(SRC_PATH)/ft_printf
+SERVER_PATH = $(SRC_PATH)/$(SERVER)
+CLIENT_PATH = $(SRC_PATH)/$(CLIENT)
+LIBFT_PATH = $(SRC_PATH)/ft_printf
 LIBFTPRINTF = $(LIBFT_PATH)/libftprintf.a
 
-SOURCES =	server.c
 
-OBJECTS = $(SOURCES:.c=.o)
+all: $(SERVER)
 
-all: $(NAME)
-
-$(NAME): $(LIBFTPRINTF) $(OBJECTS)
-	$(CC) -o $(NAME) $(OBJECTS) $(LIBFTPRINTF)
+$(SERVER): $(LIBFTPRINTF)
+	$(MAKE) -C $(SERVER_PATH)
+	cp $(SERVER_PATH)/$(SERVER) .
 
 $(LIBFTPRINTF):
 	$(MAKE) -C $(LIBFT_PATH)
 
-%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -o $@ -c $<
-
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(SERVER)
 	$(MAKE) -C $(LIBFT_PATH) fclean
+	$(MAKE) -C $(SERVER_PATH) fclean
 
 clean:
-	rm -f $(OBJECTS)
 	$(MAKE) -C $(LIBFT_PATH) clean
+	$(MAKE) -C $(SERVER_PATH) clean
 
 re: fclean all
 
