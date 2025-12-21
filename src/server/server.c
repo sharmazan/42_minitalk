@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/12/21 18:11:15 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2025/12/21 18:49:50 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	on_signal(int sig)
 	if (sig == SIGUSR1)
 		msg = "1\n";
 	else if (sig == SIGUSR2)
-		msg = "2\n";
+		msg = "0\n";
 	// async-signal-safe output:
 	(void)write(STDOUT, msg, 2);
 }
