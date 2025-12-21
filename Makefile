@@ -41,11 +41,13 @@ fclean: clean
 	rm -f $(SERVER)
 	rm -f $(CLIENT)
 	$(MAKE) -C $(LIBFT_PATH) fclean
+	$(MAKE) -C $(FTPRINTF_PATH) fclean
 	$(MAKE) -C $(SERVER_PATH) fclean
 	$(MAKE) -C $(CLIENT_PATH) fclean
 
 clean:
 	$(MAKE) -C $(LIBFT_PATH) clean
+	$(MAKE) -C $(FTPRINTF_PATH) clean
 	$(MAKE) -C $(SERVER_PATH) clean
 	$(MAKE) -C $(CLIENT_PATH) clean
 
