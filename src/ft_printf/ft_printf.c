@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/11/04 19:23:55 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2025/12/21 17:10:28 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,31 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-static int	ft_print_formated(va_list args, char c)
+static int	ft_print_formated(int fd, va_list args, char c)
 {
 	if (c == 'c')
 	{
 		c = (char)va_arg(args, int);
-		return (write(1, &c, 1));
+		return (write(fd, &c, 1));
 	}
 	else if (c == 's')
-		return (ft_putstr_fd(va_arg(args, char *), 1));
+		return (ft_putstr_fd(va_arg(args, char *), fd));
 	else if (c == 'i' || c == 'd')
-		return (ft_putnbr_fd(va_arg(args, int), 1));
+		return (ft_putnbr_fd(va_arg(args, int), fd));
 	else if (c == 'u')
-		return (ft_putdec_fd(va_arg(args, unsigned int), 1));
+		return (ft_putdec_fd(va_arg(args, unsigned int), fd));
 	else if (c == 'p')
-		return (ft_putptr_fd(va_arg(args, void *), 1));
+		return (ft_putptr_fd(va_arg(args, void *), fd));
 	else if (c == 'x')
-		return (ft_puthex_fd(va_arg(args, unsigned int), 1));
+		return (ft_puthex_fd(va_arg(args, unsigned int), fd));
 	else if (c == 'X')
-		return (ft_putbighex_fd(va_arg(args, unsigned int), 1));
+		return (ft_putbighex_fd(va_arg(args, unsigned int), fd));
 	else if (c == '%')
-		return (write(1, "%", 1));
+		return (write(fd, "%", 1));
 	return (0);
 }
 
-int	ft_printf(const char *format, ...)
+int	ft_fprintf(int fd, const char *format, ...)
 {
 	va_list	args;
 	int		printed;
@@ -51,11 +51,11 @@ int	ft_printf(const char *format, ...)
 		if (*format == '%')
 		{
 			format++;
-			printed += ft_print_formated(args, *format);
+			printed += ft_print_formated(fd, args, *format);
 			format++;
 		}
 		else
-			printed += write(1, format++, 1);
+			printed += write(fd, format++, 1);
 	}
 	va_end(args);
 	return (printed);

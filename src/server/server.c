@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/12/20 17:39:48 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2025/12/21 16:42:31 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ int	main(void)
 		return (1);
 	}
 	// Wait for signals forever
-	for (;;)
+	while (1)
 		pause();
 }
