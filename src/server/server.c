@@ -6,17 +6,11 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/12/21 16:42:31 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2025/12/21 17:47:26 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_printf/libftprintf.h"
-#include <unistd.h>
-
-// int	main(void)
-// {
-// 	ft_printf("%d\n", getpid());
-// }
 
 #define _POSIX_C_SOURCE 200809L
 #include <signal.h>
@@ -29,13 +23,11 @@ static void	on_signal(int sig)
 	const char	*msg = NULL;
 
 	if (sig == SIGUSR1)
-		msg = "Caught SIGUSR1\n";
+		msg = "1\n";
 	else if (sig == SIGUSR2)
-		msg = "Caught SIGUSR2\n";
-	else
-		msg = "Caught other signal\n";
+		msg = "2\n";
 	// async-signal-safe output:
-	(void)write(STDOUT_FILENO, msg, strlen(msg));
+	(void)write(STDOUT_FILENO, msg, 2);
 }
 
 int	main(void)
