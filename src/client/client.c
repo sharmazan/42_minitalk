@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/12/22 21:57:50 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2025/12/22 22:23:10 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,16 @@ void	send_bit(int pid, unsigned char bit)
 	char	c;
 
 	c = bit + '0';
-	write(1, &c, 1);
 	if (bit == 1)
 		sig = SIGUSR1;
 	else
 		sig = SIGUSR2;
 	if (kill(pid, sig) == -1)
 	{
-		ft_fprintf(STDERR, "kill");
+		ft_fprintf(STDERR, "kill returned error");
 		exit(1);
 	}
-	usleep(1);
+	usleep(500);
 }
 
 char	get_bit(int pos, unsigned char c)
@@ -55,7 +54,6 @@ void	send_byte(int pid, unsigned char c)
 
 void	send_message(int pid, char *message)
 {
-	ft_fprintf(STDOUT, "Message: %s\n", message);
 	while (*message != 0)
 		send_byte(pid, *message++);
 }
@@ -64,7 +62,6 @@ int	main(int argc, char **av)
 {
 	pid_t	pid;
 
-	// int		which;
 	if (argc != 3)
 	{
 		ft_fprintf(STDERR, "Usage: %s <PID> <message>\n", av[0]);

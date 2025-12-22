@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/12/22 21:51:42 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2025/12/22 22:05:46 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 
-int			pos;
-char		byte;
-char		bit;
-char		ready;
+int			g_pos;
 
 // static void	on_signal(int sig)
 // {
@@ -37,13 +34,17 @@ char		ready;
 
 static void	on_signal(int sig)
 {
+	static char	byte;
+
+	if (g_pos == 0)
+		byte = 0;
 	if (sig == SIGUSR1)
-		byte = byte | 1 << pos;
-	pos++;
-	if (pos == 8)
+		byte = byte | 1 << g_pos;
+	g_pos++;
+	if (g_pos == 8)
 	{
 		write(STDOUT, &byte, 1);
-		pos = 0;
+		g_pos = 0;
 		byte = 0;
 	}
 }
@@ -53,9 +54,7 @@ int	main(void)
 	struct sigaction	sa;
 
 	printf("%ld\n", (long)getpid());
-	ready = 0;
-	pos = 0;
-	byte = 0;
+	g_pos = 0;
 	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = on_signal;
 	sigemptyset(&sa.sa_mask);

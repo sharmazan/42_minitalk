@@ -6,3 +6,4 @@ src/client/client
 **/.vscode
 /server
 /client
+/test
