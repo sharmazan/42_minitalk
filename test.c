@@ -21,8 +21,11 @@ int	main(int ac, char **av)
 	num = atoi(av[1]);
 	for (int i = 0; i < 8; i++)
 		printf("%d\n", (1 << i) & num);
-	printf("*****************************\n");
+	printf("\n*****************************\n");
 	for (int i = 0; i < 8; i++)
 		printf("%d", get_bit(i, num));
+	printf("*****************************\n");
+	printf("1 << 0 = %d, 1 << 2 = %d, 1 | 1 << 2 = %d\n", 1 << 0, 1 << 2,
+		1 | 1 << 2);
 	return (0);
 }
