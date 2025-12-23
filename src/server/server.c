@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/12/22 22:05:46 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2025/12/23 12:44:59 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	on_signal(int sig)
 	}
 }
 
+// sa.sa_flags = SA_SIGINFO;
 int	main(void)
 {
 	struct sigaction	sa;
@@ -60,7 +61,6 @@ int	main(void)
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGUSR1);
 	sigaddset(&sa.sa_mask, SIGUSR2);
-	// sa.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 	{
 		ft_fprintf(STDERR, "sigaction SIGUSR1");
