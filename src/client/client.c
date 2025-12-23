@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/12/23 12:43:01 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2025/12/23 16:21:11 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	send_bit(int pid, unsigned char bit)
 	int		sig;
 	char	c;
 
+	write(STDOUT, "enter\n", 6);
 	c = bit + '0';
 	if (bit == 1)
 		sig = SIGUSR1;
@@ -30,10 +31,11 @@ void	send_bit(int pid, unsigned char bit)
 		sig = SIGUSR2;
 	if (kill(pid, sig) == -1)
 	{
-		ft_fprintf(STDERR, "kill returned error");
+		ft_fprintf(STDERR, "kill returned error\n");
 		exit(1);
 	}
-	usleep(500);
+	usleep(300);
+	write(STDOUT, "exit\n", 5);
 }
 
 char	get_bit(int pos, unsigned char c)
@@ -58,9 +60,16 @@ void	send_message(int pid, char *message)
 		send_byte(pid, *message++);
 }
 
+void	confirm(int sig)
+{
+	if (sig == SIGUSR1)
+		write(1, "Received bit\n", 13);
+}
+
 int	main(int argc, char **av)
 {
-	pid_t	pid;
+	pid_t				pid;
+	struct sigaction	sa;
 
 	if (argc != 3)
 	{
@@ -70,9 +79,18 @@ int	main(int argc, char **av)
 	pid = (pid_t)ft_atoi(av[1]);
 	if (pid < 1)
 	{
-		ft_fprintf(STDERR, "<PID> should be a poisitive integer number\n");
+		ft_fprintf(STDERR, "<PID> should be a positive integer number\n");
 		return (1);
 	}
+	// signal(SIGUSR1, confirm);
+	sa.sa_handler = confirm;
+	// sa.sa_flags = SA_SIGINFO;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGUSR1);
+	sigaddset(&sa.sa_mask, SIGUSR2);
+	if ((sigaction(SIGUSR1, &sa, NULL) == -1) || (sigaction(SIGUSR2, &sa,
+				NULL) == -1))
+		return (ft_fprintf(STDERR, "sigaction error\n"), 1);
 	send_message(pid, av[2]);
 	return (0);
 }
