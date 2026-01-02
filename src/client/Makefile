@@ -8,7 +8,7 @@ FTPRINTF_PATH = ../ft_printf
 LIBFTPRINTF = $(FTPRINTF_PATH)/libftprintf.a
 HEADER = ../inc/ft_header.h
 
-SOURCES =	client.c
+SOURCES =	client.c client_utils.c
 
 OBJECTS = $(SOURCES:.c=.o)
 

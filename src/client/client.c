@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2025/12/23 16:21:11 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2026/01/02 21:27:07 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+volatile sig_atomic_t	g_ack;
+
 void	send_bit(int pid, unsigned char bit)
 {
-	int		sig;
-	char	c;
+	int	sig;
 
-	write(STDOUT, "enter\n", 6);
-	c = bit + '0';
 	if (bit == 1)
 		sig = SIGUSR1;
 	else
 		sig = SIGUSR2;
+	g_ack = 0;
+	usleep(1);
 	if (kill(pid, sig) == -1)
 	{
 		ft_fprintf(STDERR, "kill returned error\n");
 		exit(1);
 	}
-	usleep(300);
-	write(STDOUT, "exit\n", 5);
-}
-
-char	get_bit(int pos, unsigned char c)
-{
-	if (((1 << pos) & c) == 0)
-		return (0);
-	return (1);
 }
 
 void	send_byte(int pid, unsigned char c)
@@ -51,7 +43,11 @@ void	send_byte(int pid, unsigned char c)
 
 	bit_pos = 0;
 	while (bit_pos < 8)
+	{
 		send_bit(pid, get_bit(bit_pos++, c));
+		while (g_ack == 0)
+			sleep(1);
+	}
 }
 
 void	send_message(int pid, char *message)
@@ -63,34 +59,25 @@ void	send_message(int pid, char *message)
 void	confirm(int sig)
 {
 	if (sig == SIGUSR1)
-		write(1, "Received bit\n", 13);
+		write(1, "1", 1);
+	else
+		write(1, "0", 1);
+	g_ack = 1;
 }
 
 int	main(int argc, char **av)
 {
-	pid_t				pid;
-	struct sigaction	sa;
+	int	pid;
 
 	if (argc != 3)
-	{
-		ft_fprintf(STDERR, "Usage: %s <PID> <message>\n", av[0]);
-		return (1);
-	}
-	pid = (pid_t)ft_atoi(av[1]);
+		return (ft_fprintf(STDERR, "Usage: %s <PID> <message>\n", av[0]), 1);
+	pid = ft_atoi(av[1]);
 	if (pid < 1)
-	{
-		ft_fprintf(STDERR, "<PID> should be a positive integer number\n");
-		return (1);
-	}
-	// signal(SIGUSR1, confirm);
-	sa.sa_handler = confirm;
-	// sa.sa_flags = SA_SIGINFO;
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGUSR1);
-	sigaddset(&sa.sa_mask, SIGUSR2);
-	if ((sigaction(SIGUSR1, &sa, NULL) == -1) || (sigaction(SIGUSR2, &sa,
-				NULL) == -1))
-		return (ft_fprintf(STDERR, "sigaction error\n"), 1);
+		return (ft_fprintf(STDERR,
+				"<PID> should be a positive integer number\n"), 1);
+	if ((signal(SIGUSR1, confirm) == SIG_ERR) || signal(SIGUSR2,
+			confirm) == SIG_ERR)
+		return (ft_fprintf(STDERR, "signal error\n"), 1);
 	send_message(pid, av[2]);
 	return (0);
 }
