@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2026/01/02 21:27:07 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2026/01/02 21:53:33 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	send_bit(int pid, unsigned char bit)
 	else
 		sig = SIGUSR2;
 	g_ack = 0;
-	usleep(1);
 	if (kill(pid, sig) == -1)
 	{
 		ft_fprintf(STDERR, "kill returned error\n");

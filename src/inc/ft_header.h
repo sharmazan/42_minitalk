@@ -6,7 +6,7 @@
 /*   By: ssharmaz <ssharmaz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:17:00 by ssharmaz          #+#    #+#             */
-/*   Updated: 2026/01/02 21:09:43 by ssharmaz         ###   ########.fr       */
+/*   Updated: 2026/01/02 21:45:20 by ssharmaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,6 @@
 # define STDOUT 1
 # define STDERR 2
 
-struct				s_client
-{
-	int				sig1;
-	int				sig2;
-	volatile int	pid;
-};
-
-char				get_bit(int pos, unsigned char c);
+char	get_bit(int pos, unsigned char c);
 
 #endif
