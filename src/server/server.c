@@ -42,10 +42,13 @@ void	handler(int sig, siginfo_t *info, void *ucontext)
 		write(STDOUT, &byte, 1);
 		pos = 0;
 	}
-	if (sig == SIGUSR1 && kill(info->si_pid, SIGUSR1) == -1)
-		errexit("kill error");
+	if (sig == SIGUSR1)
+	{
+		if (kill(info->si_pid, SIGUSR1) == -1)
+			pos = 0;
+	}
 	else if (kill(info->si_pid, SIGUSR2) == -1)
-		errexit("kill error");
+		pos = 0;
 }
 
 void	setup_signals(struct sigaction *sa)

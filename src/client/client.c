@@ -44,8 +44,8 @@ void	send_byte(int pid, unsigned char c)
 	while (bit_pos < 8)
 	{
 		send_bit(pid, get_bit(bit_pos++, c));
-		while (g_ack == 0)
-			sleep(1);
+		while (!g_ack)
+			pause();
 	}
 }
 
